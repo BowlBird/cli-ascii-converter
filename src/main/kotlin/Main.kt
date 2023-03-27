@@ -12,7 +12,7 @@ import java.io.File
 import javax.imageio.ImageIO
 
 
-class AsciiConvert : CliktCommand(help="A program to convert a source image to an ascii image") {
+class AsciiConverter : CliktCommand(help="A program to convert a source image to an ascii image") {
 
     //files
     private val source by argument(help="Source file").file(mustExist = true)
@@ -94,4 +94,4 @@ class AsciiConvert : CliktCommand(help="A program to convert a source image to a
     }
 }
 
-fun main(args: Array<String>) = AsciiConvert().main(args)
+fun main(args: Array<String>) = AsciiConverter().main(args)
