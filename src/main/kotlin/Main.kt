@@ -6,14 +6,9 @@ import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.switch
 import com.github.ajalt.clikt.parameters.types.file
 import com.github.ajalt.clikt.parameters.types.int
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import java.awt.image.BufferedImage
-import java.io.ByteArrayInputStream
 import java.io.File
+import java.io.FileOutputStream
 import javax.imageio.ImageIO
-import kotlin.system.measureTimeMillis
-
 
 
 class AsciiConverter : CliktCommand(help="A program to convert a source image to an ascii image") {
@@ -38,14 +33,23 @@ class AsciiConverter : CliktCommand(help="A program to convert a source image to
 
         //read image from file
         val sourceImage = ImageIO.read(source)
-
         //process
-        val asciiImage = convertToAscii(sourceImage, resolution, asciiValue, asciiResolution, !useColor.isNullOrEmpty())
+        if(textOutput.equals("txt")) {
+            val asciiString = convertToAsciiText(sourceImage, resolution, asciiValue)
 
-        //create file to output to
-        //name will either be source-ascii or from option string
-        val outputFile = File("$destinationDir/${if (outputName.isNullOrEmpty()) "${source.nameWithoutExtension}-ascii.png" else "$outputName.png"}")
-        ImageIO.write(asciiImage, "png", outputFile)
+            File("$destinationDir/${if (outputName.isNullOrEmpty()) "${source.nameWithoutExtension}-ascii.txt" else "$outputName.txt"}")
+                .writeText(asciiString)
+        }
+        else {
+            val asciiImage =
+                convertToAsciiImage(sourceImage, resolution, asciiValue, asciiResolution, !useColor.isNullOrEmpty())
+
+            //create file to output to
+            //name will either be source-ascii or from option string
+            val outputFile =
+                File("$destinationDir/${if (outputName.isNullOrEmpty()) "${source.nameWithoutExtension}-ascii.png" else "$outputName.png"}")
+            ImageIO.write(asciiImage, "png", outputFile)
+        }
     }
 }
 
