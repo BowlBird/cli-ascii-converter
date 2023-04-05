@@ -1,6 +1,7 @@
 import java.awt.Color
 import java.awt.Font
 import java.awt.image.BufferedImage
+import kotlin.math.roundToInt
 
 fun convertToAscii(
     source: BufferedImage,
@@ -11,13 +12,21 @@ fun convertToAscii(
 ): BufferedImage {
 
     val baseResolution = Pair(source.width, source.height)
-    val filteredResolution = Pair(baseResolution.first / resolution, baseResolution.second / resolution)
+    val filteredResolution = Pair(
+        resolution,
+        (resolution * (baseResolution.second.toDouble() / baseResolution.first)).roundToInt()
+    )
+    //used to accurately index rgb from source
+    val resolutionRatio = Pair(
+        baseResolution.first.toDouble() / filteredResolution.first,
+        baseResolution.second.toDouble() / filteredResolution.second,
+    )
 
     //get int representation of bitwise stored color values from source
     val rawFilteredRGB2D = MutableList(filteredResolution.second) {y ->
         MutableList(filteredResolution.first) {x ->
             //if statement filters when to call getRGB as it is quite intensive
-            source.getRGB(x * resolution, y * resolution) //initialize
+            source.getRGB((x * resolutionRatio.first).roundToInt(), (y * resolutionRatio.second).roundToInt()) //initialize
         }
     }
 
@@ -55,7 +64,7 @@ fun convertToAscii(
         val y = rawY * asciiResolution
 
         graphics.color = if (useColor) Color(rawFilteredRGB2D[rawY][rawX]) else Color.WHITE
-        graphics.drawString(char.toString(), x, y)
+        graphics.drawString(char.toString(), x, y + asciiResolution) //offset to ensure all strings are on screen
     }}
     graphics.dispose()
 

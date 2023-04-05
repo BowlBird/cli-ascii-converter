@@ -23,7 +23,7 @@ class AsciiConverter : CliktCommand(help="A program to convert a source image to
 
     //options
     private val outputName by option("-o", "--output-name", help="Name the outputted file will use.")
-    private val resolution by option("-r", "--resolution", help="Factor to reduce input file resolution by.").int().default(20).check { it > 0 }
+    private val resolution by option("-r", "--resolution", help="Factor to reduce input file resolution by.").int().default(200).check { it > 0 }
     private val useColor by option("-c", "--color", help="Outputted image will include color.").switch(Pair("-c", "c"), Pair("--color", "c"))
     private val asciiValue by option("-a", "--ascii", help="Overrides the default ascii characters used, first to last is darkest to lightest.")
         .default(""" .'`^"\,:;Il!i><~+_-?][}{1)(|\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$""")
