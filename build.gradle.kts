@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.8.0"
+    kotlin("jvm") version "1.8.10"
     application
 }
 
@@ -15,6 +15,7 @@ repositories {
 
 dependencies {
     implementation("com.github.ajalt.clikt:clikt:3.5.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0-Beta")
     testImplementation(kotlin("test"))
 }
 
