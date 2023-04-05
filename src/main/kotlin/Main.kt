@@ -23,12 +23,16 @@ class AsciiConverter : CliktCommand(help="A program to convert a source image to
 
     //options
     private val outputName by option("-o", "--output-name", help="Name the outputted file will use.")
-    private val resolution by option("-r", "--resolution", help="Factor to reduce input file resolution by.").int().default(200).check { it > 0 }
-    private val useColor by option("-c", "--color", help="Outputted image will include color.").switch(Pair("-c", "c"), Pair("--color", "c"))
+    private val resolution by option("-r", "--resolution", help="Factor to reduce input file resolution by.")
+        .int().default(200).check { it > 0 }
+    private val useColor by option("-c", "--color", help="Outputted image will include color.")
+        .switch("-c" to "c", "--color" to "c")
     private val asciiValue by option("-a", "--ascii", help="Overrides the default ascii characters used, first to last is darkest to lightest.")
         .default(""" .'`^"\,:;Il!i><~+_-?][}{1)(|\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$""")
     private val asciiResolution by option("-t", "--text-resolution", help="Sets the resolution the ascii characters will be outputted with.")
         .int().default(20)
+    private val textOutput by option("-x", "--txt-out", help="Outputs a txt file rather than an image. '--color' and '--text-resolution' become useless options with this option toggled.")
+        .switch("-x" to "txt", "--txt-out" to "txt")
 
     override fun run() {
 
